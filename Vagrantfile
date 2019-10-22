@@ -1,12 +1,12 @@
-Vagrant.configure("2") do |config|
-  config.vm.box = "centos/7"
-  config.vm.network "private_network", ip: "192.168.33.10"
-  config.vm.synced_folder "./www", "/var/www",
-    :owner => "vagrant",
-    :group => "vagrant",
+Vagrant.configure('2') do |config|
+  config.vm.box = 'centos/7'
+  config.vm.network 'private_network', ip: '192.168.33.10'
+  config.vm.synced_folder './www', '/var/www',
+    :owner => 'vagrant',
+    :group => 'vagrant',
     :mount_options => ['dmode=775','fmode=664']
 
-  config.vm.provision "shell", inline: <<-EOT
+  config.vm.provision 'shell', inline: <<-EOT
     sed -i 's/^SELINUX=.*$/SELINUX=disabled/g' /etc/selinux/config
 
     yum update
@@ -24,14 +24,15 @@ Vagrant.configure("2") do |config|
       echo skip-grant-tables >> /etc/my.cnf
     fi
     systemctl start mariadb.service
-    mysql -u root -e "CREATE DATABASE IF NOT EXISTS wordpress"
+    mysql -u root -e 'CREATE DATABASE IF NOT EXISTS wordpress'
     systemctl stop mariadb.service
 
     # Install PHP
     rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
     yum install --enablerepo=remi,remi-php71 php php-devel php-mbstring php-mysqlnd php-pdo php-gd php-xml php-mcrypt -y 
+    chown -R vagrant /var/lib/php/session
   EOT
 
-  config.vm.provision "shell", run: "always", inline: "systemctl start httpd.service"
-  config.vm.provision "shell", run: "always", inline: "systemctl start mariadb.service"
+  config.vm.provision 'shell', run: 'always', inline: 'systemctl start httpd.service'
+  config.vm.provision 'shell', run: 'always', inline: 'systemctl start mariadb.service'
 end

@@ -32,6 +32,12 @@ In your browser, follow the steps outlined by the configuration process. Begin b
 
 Finally, select "Run the install" and supply the required values as prompted.
 
+### Access phpMyAdmin
+
+Open your browser at [http://192.168.33.10/phpmyadmin](http://192.168.33.10/phpmyadmin).
+
+Login with the username `root` and an empty password.
+
 ### Stop virtual server
 
 ```shell
